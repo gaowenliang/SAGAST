@@ -2,7 +2,7 @@
 #define AGAST_ALL_H
 
 #include "../agast.h"
-#include "../agast_score.hpp"
+#include "../score/agast_score.hpp"
 
 namespace cv
 {

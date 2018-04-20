@@ -1,14 +1,14 @@
 
-#include "../agast.h"
-#include "../agast_score.hpp"
-#include "AGAST_ALL.h"
+#include "../../agast.h"
+#include "../../score/agast_score.hpp"
+#include "../AGAST_ALL.h"
 
 using namespace cv;
 
 #if ( defined __i386__ || defined( _M_IX86 ) || defined __x86_64__ || defined( _M_X64 ) )
 
 void
-AgastDetector::calcAGAST_7_12s( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold )
+AgastDetector::calc_12s( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold )
 {
     cv::Mat img;
     if ( !_img.getMat( ).isContinuous( ) )
@@ -27,21 +27,20 @@ AgastDetector::calcAGAST_7_12s( InputArray _img, std::vector< KeyPoint >& keypoi
 
     keypoints.resize( 0 );
 
-    int pixel_7_12s_[16];
-    getAgastOffsets( pixel_7_12s_, ( int )img.step, AgastDetector::AGAST_7_12s );
+    short pixel_12s_[16];
 
-    short offset0  = ( short )pixel_7_12s_[0];
-    short offset1  = ( short )pixel_7_12s_[1];
-    short offset2  = ( short )pixel_7_12s_[2];
-    short offset3  = ( short )pixel_7_12s_[3];
-    short offset4  = ( short )pixel_7_12s_[4];
-    short offset5  = ( short )pixel_7_12s_[5];
-    short offset6  = ( short )pixel_7_12s_[6];
-    short offset7  = ( short )pixel_7_12s_[7];
-    short offset8  = ( short )pixel_7_12s_[8];
-    short offset9  = ( short )pixel_7_12s_[9];
-    short offset10 = ( short )pixel_7_12s_[10];
-    short offset11 = ( short )pixel_7_12s_[11];
+    short offset0;
+    short offset1;
+    short offset2;
+    short offset3;
+    short offset4;
+    short offset5;
+    short offset6;
+    short offset7;
+    short offset8;
+    short offset9;
+    short offset10;
+    short offset11;
 
     width = xsize;
 
@@ -57,9 +56,30 @@ AgastDetector::calcAGAST_7_12s( InputArray _img, std::vector< KeyPoint >& keypoi
                 break;
             else
             {
+                const unsigned char* const mask = m_mask.ptr( ) + y * width + x;
+                if ( mask[0] < 20 )
+                    continue;
+
                 const unsigned char* const ptr = img.ptr( ) + y * width + x;
-                const int cb                   = *ptr + threshold;
-                const int c_b                  = *ptr - threshold;
+
+                const int cb  = *ptr + threshold;
+                const int c_b = *ptr - threshold;
+
+                getOffsets_12s( pixel_12s_, ( int )img.step, x, y );
+
+                offset0  = pixel_12s_[0];
+                offset1  = pixel_12s_[1];
+                offset2  = pixel_12s_[2];
+                offset3  = pixel_12s_[3];
+                offset4  = pixel_12s_[4];
+                offset5  = pixel_12s_[5];
+                offset6  = pixel_12s_[6];
+                offset7  = pixel_12s_[7];
+                offset8  = pixel_12s_[8];
+                offset9  = pixel_12s_[9];
+                offset10 = pixel_12s_[10];
+                offset11 = pixel_12s_[11];
+
                 if ( ptr[offset0] > cb )
                     if ( ptr[offset2] > cb )
                         if ( ptr[offset5] > cb )
@@ -980,9 +1000,31 @@ AgastDetector::calcAGAST_7_12s( InputArray _img, std::vector< KeyPoint >& keypoi
                 break;
             else
             {
+
+                const unsigned char* const mask = m_mask.ptr( ) + y * width + x;
+                if ( mask[0] < 20 )
+                    continue;
+
                 const unsigned char* const ptr = img.ptr( ) + y * width + x;
-                const int cb                   = *ptr + threshold;
-                const int c_b                  = *ptr - threshold;
+
+                const int cb  = *ptr + threshold;
+                const int c_b = *ptr - threshold;
+
+                getOffsets_12s( pixel_12s_, ( int )img.step, x, y );
+
+                offset0  = pixel_12s_[0];
+                offset1  = pixel_12s_[1];
+                offset2  = pixel_12s_[2];
+                offset3  = pixel_12s_[3];
+                offset4  = pixel_12s_[4];
+                offset5  = pixel_12s_[5];
+                offset6  = pixel_12s_[6];
+                offset7  = pixel_12s_[7];
+                offset8  = pixel_12s_[8];
+                offset9  = pixel_12s_[9];
+                offset10 = pixel_12s_[10];
+                offset11 = pixel_12s_[11];
+
                 if ( ptr[offset0] > cb )
                     if ( ptr[offset2] > cb )
                         if ( ptr[offset5] > cb )
@@ -1877,9 +1919,9 @@ AgastDetector::calcAGAST_7_12s( InputArray _img, std::vector< KeyPoint >& keypoi
 #if !( defined __i386__ || defined( _M_IX86 ) || defined __x86_64__ || defined( _M_X64 ) )
 
 static void
-AGAST_7_12s( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold )
+AGAST_12s( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold )
 {
-    AGAST_ALL( _img, keypoints, threshold, AgastDetector::AGAST_7_12s );
+    AGAST_ALL( _img, keypoints, threshold, AgastDetector::AGAST_12s );
 }
 
 #endif // (defined __i386__ || defined(_M_IX86) || defined __x86_64__ || defined(_M_X64))

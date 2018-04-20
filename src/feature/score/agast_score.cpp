@@ -43,7 +43,7 @@ The references are:
 */
 
 #include "agast_score.hpp"
-#include "agast.h"
+#include "../agast.h"
 
 #ifdef _MSC_VER
 #pragma warning( disable : 4127 )
@@ -56,7 +56,7 @@ namespace cv
 // 16 pixel mask
 template<>
 int
-agastCornerScore< AgastDetector::OAST_9_16 >( const uchar* ptr, const short pixel[], int threshold )
+agastCornerScore< AgastDetector::SAGAST_16 >( const uchar* ptr, const short pixel[], int threshold )
 {
     int bmin   = threshold;
     int bmax   = 255;
@@ -2001,7 +2001,7 @@ agastCornerScore< AgastDetector::OAST_9_16 >( const uchar* ptr, const short pixe
 // 12 pixel mask in diamond format
 template<>
 int
-agastCornerScore< AgastDetector::AGAST_7_12d >( const uchar* ptr, const short pixel[], int threshold )
+agastCornerScore< AgastDetector::SAGAST_12d >( const uchar* ptr, const short pixel[], int threshold )
 {
     int bmin   = threshold;
     int bmax   = 255;
@@ -3094,7 +3094,7 @@ agastCornerScore< AgastDetector::AGAST_7_12d >( const uchar* ptr, const short pi
 // 12 pixel mask in square format
 template<>
 int
-agastCornerScore< AgastDetector::AGAST_7_12s >( const uchar* ptr, const short pixel[], int threshold )
+agastCornerScore< AgastDetector::SAGAST_12s >( const uchar* ptr, const short pixel[], int threshold )
 {
     int bmin   = threshold;
     int bmax   = 255;
@@ -8084,7 +8084,7 @@ agastCornerScore< AgastDetector::AGAST_7_12s >( const uchar* ptr, const short pi
 // 8 pixel mask
 template<>
 int
-agastCornerScore< AgastDetector::AGAST_5_8 >( const uchar* ptr, const short pixel[], int threshold )
+agastCornerScore< AgastDetector::SAGAST_8 >( const uchar* ptr, const short pixel[], int threshold )
 {
     int bmin   = threshold;
     int bmax   = 255;

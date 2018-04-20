@@ -1,16 +1,16 @@
 #include "../../agast.h"
-#include "../../agast_score.hpp"
+#include "../../score/agast_score.hpp"
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
 
 void
-AgastDetector::buildAgastOffsetsTable_AGAST_7_12d( )
+AgastDetector::buildOffsetsTable_12d( )
 {
     std::cout << "start build AGAST Offsets Table.\n";
 
     int offset_size;
-    if ( getType( ) == AGAST_7_12d )
+    if ( getType( ) == SAGAST_12d )
         offset_size = 12;
 
     int image_height = cam->imageHeight( );
@@ -111,7 +111,7 @@ AgastDetector::buildAgastOffsetsTable_AGAST_7_12d( )
 }
 
 void
-AgastDetector::getAgastOffsets_AGAST_7_12d( short pixel[16], short rowStride, int xx, int yy )
+AgastDetector::getOffsets_12d( short pixel[16], short rowStride, int xx, int yy )
 {
     // cv::Vec24c offset = m_tableOffsets.at< cv::Vec24c >( yy, xx );
     //
@@ -128,22 +128,22 @@ AgastDetector::getAgastOffsets_AGAST_7_12d( short pixel[16], short rowStride, in
     //     pixel[k] = short( p[2 * k + xx24] ) + short( p[2 * k + xx24 + 1] ) * rowStride;
     // }
 
-    pixel[0]  = short( p[0 + xx24] ) + short( p[0 + xx24 + 1] ) * rowStride;
-    pixel[1]  = short( p[2 + xx24] ) + short( p[2 + xx24 + 1] ) * rowStride;
-    pixel[2]  = short( p[4 + xx24] ) + short( p[4 + xx24 + 1] ) * rowStride;
-    pixel[3]  = short( p[6 + xx24] ) + short( p[6 + xx24 + 1] ) * rowStride;
-    pixel[4]  = short( p[8 + xx24] ) + short( p[8 + xx24 + 1] ) * rowStride;
-    pixel[5]  = short( p[10 + xx24] ) + short( p[10 + xx24 + 1] ) * rowStride;
-    pixel[6]  = short( p[12 + xx24] ) + short( p[12 + xx24 + 1] ) * rowStride;
-    pixel[7]  = short( p[14 + xx24] ) + short( p[14 + xx24 + 1] ) * rowStride;
-    pixel[8]  = short( p[16 + xx24] ) + short( p[16 + xx24 + 1] ) * rowStride;
-    pixel[9]  = short( p[18 + xx24] ) + short( p[18 + xx24 + 1] ) * rowStride;
-    pixel[10] = short( p[20 + xx24] ) + short( p[20 + xx24 + 1] ) * rowStride;
-    pixel[11] = short( p[22 + xx24] ) + short( p[22 + xx24 + 1] ) * rowStride;
+    pixel[0]  = short( p[0 + xx24] ) + short( p[1 + xx24] ) * rowStride;
+    pixel[1]  = short( p[2 + xx24] ) + short( p[3 + xx24] ) * rowStride;
+    pixel[2]  = short( p[4 + xx24] ) + short( p[5 + xx24] ) * rowStride;
+    pixel[3]  = short( p[6 + xx24] ) + short( p[7 + xx24] ) * rowStride;
+    pixel[4]  = short( p[8 + xx24] ) + short( p[9 + xx24] ) * rowStride;
+    pixel[5]  = short( p[10 + xx24] ) + short( p[11 + xx24] ) * rowStride;
+    pixel[6]  = short( p[12 + xx24] ) + short( p[13 + xx24] ) * rowStride;
+    pixel[7]  = short( p[14 + xx24] ) + short( p[15 + xx24] ) * rowStride;
+    pixel[8]  = short( p[16 + xx24] ) + short( p[17 + xx24] ) * rowStride;
+    pixel[9]  = short( p[18 + xx24] ) + short( p[19 + xx24] ) * rowStride;
+    pixel[10] = short( p[20 + xx24] ) + short( p[21 + xx24] ) * rowStride;
+    pixel[11] = short( p[22 + xx24] ) + short( p[23 + xx24] ) * rowStride;
 }
 
 bool
-AgastDetector::saveAgastOffsetsTable_AGAST_7_12d( std::string path )
+AgastDetector::saveOffsetsTable_12d( std::string path )
 {
     int image_row = m_tableOffsets.rows;
     int image_col = m_tableOffsets.cols;
@@ -211,7 +211,7 @@ AgastDetector::saveAgastOffsetsTable_AGAST_7_12d( std::string path )
 }
 
 bool
-AgastDetector::loadAgastOffsetsTable_AGAST_7_12d( std::string path )
+AgastDetector::loadOffsetsTable_12d( std::string path )
 {
     cv::Mat save_table0 = cv::imread( path + "/featurePatchTable0.bmp", cv::IMREAD_UNCHANGED );
     cv::Mat save_table1 = cv::imread( path + "/featurePatchTable1.bmp", cv::IMREAD_UNCHANGED );

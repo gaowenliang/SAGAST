@@ -1,14 +1,14 @@
 
-#include "../agast.h"
-#include "../agast_score.hpp"
-#include "AGAST_ALL.h"
+#include "../../agast.h"
+#include "../../score/agast_score.hpp"
+#include "../AGAST_ALL.h"
 
 using namespace cv;
 
 #if ( defined __i386__ || defined( _M_IX86 ) || defined __x86_64__ || defined( _M_X64 ) )
 
 void
-AgastDetector::calcOAST_9_16( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold )
+AgastDetector::calc_16( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold )
 {
     cv::Mat img;
     if ( !_img.getMat( ).isContinuous( ) )
@@ -27,25 +27,24 @@ AgastDetector::calcOAST_9_16( InputArray _img, std::vector< KeyPoint >& keypoint
 
     keypoints.resize( 0 );
 
-    int pixel_9_16_[16];
-    getAgastOffsets( pixel_9_16_, ( int )img.step, AgastDetector::OAST_9_16 );
+    short pixel_9_16_[16];
 
-    short offset0  = ( short )pixel_9_16_[0];
-    short offset1  = ( short )pixel_9_16_[1];
-    short offset2  = ( short )pixel_9_16_[2];
-    short offset3  = ( short )pixel_9_16_[3];
-    short offset4  = ( short )pixel_9_16_[4];
-    short offset5  = ( short )pixel_9_16_[5];
-    short offset6  = ( short )pixel_9_16_[6];
-    short offset7  = ( short )pixel_9_16_[7];
-    short offset8  = ( short )pixel_9_16_[8];
-    short offset9  = ( short )pixel_9_16_[9];
-    short offset10 = ( short )pixel_9_16_[10];
-    short offset11 = ( short )pixel_9_16_[11];
-    short offset12 = ( short )pixel_9_16_[12];
-    short offset13 = ( short )pixel_9_16_[13];
-    short offset14 = ( short )pixel_9_16_[14];
-    short offset15 = ( short )pixel_9_16_[15];
+    short offset0;
+    short offset1;
+    short offset2;
+    short offset3;
+    short offset4;
+    short offset5;
+    short offset6;
+    short offset7;
+    short offset8;
+    short offset9;
+    short offset10;
+    short offset11;
+    short offset12;
+    short offset13;
+    short offset14;
+    short offset15;
 
     width = xsize;
 
@@ -59,9 +58,34 @@ AgastDetector::calcOAST_9_16( InputArray _img, std::vector< KeyPoint >& keypoint
                 break;
             else
             {
+                const unsigned char* const mask = m_mask.ptr( ) + y * width + x;
+                if ( mask[0] < 20 )
+                    continue;
+
                 const unsigned char* const ptr = img.ptr( ) + y * width + x;
-                const int cb                   = *ptr + threshold;
-                const int c_b                  = *ptr - threshold;
+
+                const int cb  = *ptr + threshold;
+                const int c_b = *ptr - threshold;
+
+                getOffsets_16( pixel_9_16_, ( int )img.step, x, y );
+
+                offset0  = pixel_9_16_[0];
+                offset1  = pixel_9_16_[1];
+                offset2  = pixel_9_16_[2];
+                offset3  = pixel_9_16_[3];
+                offset4  = pixel_9_16_[4];
+                offset5  = pixel_9_16_[5];
+                offset6  = pixel_9_16_[6];
+                offset7  = pixel_9_16_[7];
+                offset8  = pixel_9_16_[8];
+                offset9  = pixel_9_16_[9];
+                offset10 = pixel_9_16_[10];
+                offset11 = pixel_9_16_[11];
+                offset12 = pixel_9_16_[12];
+                offset13 = pixel_9_16_[13];
+                offset14 = pixel_9_16_[14];
+                offset15 = pixel_9_16_[15];
+
                 if ( ptr[offset0] > cb )
                     if ( ptr[offset2] > cb )
                         if ( ptr[offset4] > cb )

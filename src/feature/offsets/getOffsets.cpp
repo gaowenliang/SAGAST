@@ -1,12 +1,12 @@
 
 #include "../agast.h"
-#include "../agast_score.hpp"
+#include "../score/agast_score.hpp"
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
 
 void
-AgastDetector::getAgastOffsets( int pixel[16], int rowStride, int type )
+AgastDetector::getOffsets( int pixel[16], int rowStride, int type )
 {
     static const int offsets16[][2] = { { -3, 0 },  //
                                         { -3, -1 }, //
@@ -60,20 +60,20 @@ AgastDetector::getAgastOffsets( int pixel[16], int rowStride, int type )
                                        { 0, 1 },   //
                                        { -1, 1 } };
 
-    const int( *offsets )[2] = type == AgastDetector::OAST_9_16 ?
+    const int( *offsets )[2] = type == AgastDetector::SAGAST_16 ?
                                offsets16 :
-                               type == AgastDetector::AGAST_7_12d ?
+                               type == AgastDetector::SAGAST_12d ?
                                offsets12d :
-                               type == AgastDetector::AGAST_7_12s ?
+                               type == AgastDetector::SAGAST_12s ?
                                offsets12s :
-                               type == AgastDetector::AGAST_5_8 ? offsets8 : 0;
+                               type == AgastDetector::SAGAST_8 ? offsets8 : 0;
 
     const int offsets_len
-    = type == AgastDetector::OAST_9_16 ?
+    = type == AgastDetector::SAGAST_16 ?
       16 :
-      type == AgastDetector::AGAST_7_12d ?
+      type == AgastDetector::SAGAST_12d ?
       12 :
-      type == AgastDetector::AGAST_7_12s ? 12 : type == AgastDetector::AGAST_5_8 ? 8 : 0;
+      type == AgastDetector::SAGAST_12s ? 12 : type == AgastDetector::SAGAST_8 ? 8 : 0;
 
     CV_Assert( pixel && offsets );
 
@@ -118,40 +118,85 @@ AgastDetector::calcAngle( const camera_model::CameraPtr cam, const Eigen::Vector
 }
 
 void
-AgastDetector::buildAgastOffsetsTable( )
+AgastDetector::buildOffsetsTable( )
 {
     switch ( getType( ) )
     {
-        case AgastDetector::AGAST_7_12d:
+        case AgastDetector::SAGAST_8:
         {
-            buildAgastOffsetsTable_AGAST_7_12d( );
+            buildOffsetsTable_8( );
+            break;
+        }
+        case AgastDetector::SAGAST_12s:
+        {
+            buildOffsetsTable_12s( );
+            break;
+        }
+        case AgastDetector::SAGAST_12d:
+        {
+            buildOffsetsTable_12d( );
+            break;
+        }
+        case AgastDetector::SAGAST_16:
+        {
+            buildOffsetsTable_16( );
             break;
         }
     }
 }
 
 void
-AgastDetector::getAgastOffsets( short pixel[16], short rowStride, int type, int xx, int yy )
+AgastDetector::getOffsets( short pixel[16], short rowStride, int type, int xx, int yy )
 {
     switch ( type )
     {
-        case AgastDetector::AGAST_7_12d:
+        case AgastDetector::SAGAST_8:
         {
-            getAgastOffsets_AGAST_7_12d( pixel, rowStride, xx, yy );
+            getOffsets_8( pixel, rowStride, xx, yy );
+            break;
+        }
+        case AgastDetector::SAGAST_12s:
+        {
+            getOffsets_12s( pixel, rowStride, xx, yy );
+            break;
+        }
+        case AgastDetector::SAGAST_12d:
+        {
+            getOffsets_12d( pixel, rowStride, xx, yy );
+            break;
+        }
+        case AgastDetector::SAGAST_16:
+        {
+            getOffsets_16( pixel, rowStride, xx, yy );
             break;
         }
     }
 }
 
 bool
-AgastDetector::saveAgastOffsetsTable( std::string path )
+AgastDetector::saveOffsetsTable( std::string path )
 {
     bool done;
     switch ( getType( ) )
     {
-        case AgastDetector::AGAST_7_12d:
+        case AgastDetector::SAGAST_8:
         {
-            done = saveAgastOffsetsTable_AGAST_7_12d( path );
+            done = saveOffsetsTable_8( path );
+            break;
+        }
+        case AgastDetector::SAGAST_12s:
+        {
+            done = saveOffsetsTable_12s( path );
+            break;
+        }
+        case AgastDetector::SAGAST_12d:
+        {
+            done = saveOffsetsTable_12d( path );
+            break;
+        }
+        case AgastDetector::SAGAST_16:
+        {
+            done = saveOffsetsTable_16( path );
             break;
         }
     }
@@ -160,14 +205,29 @@ AgastDetector::saveAgastOffsetsTable( std::string path )
 }
 
 bool
-AgastDetector::loadAgastOffsetsTable( std::string path )
+AgastDetector::loadOffsetsTable( std::string path )
 {
     bool done;
     switch ( getType( ) )
     {
-        case AgastDetector::AGAST_7_12d:
+        case AgastDetector::SAGAST_8:
         {
-            done = loadAgastOffsetsTable_AGAST_7_12d( path );
+            done = loadOffsetsTable_8( path );
+            break;
+        }
+        case AgastDetector::SAGAST_12s:
+        {
+            done = loadOffsetsTable_12s( path );
+            break;
+        }
+        case AgastDetector::SAGAST_12d:
+        {
+            done = loadOffsetsTable_12d( path );
+            break;
+        }
+        case AgastDetector::SAGAST_16:
+        {
+            done = loadOffsetsTable_16( path );
             break;
         }
     }

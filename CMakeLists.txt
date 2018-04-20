@@ -35,12 +35,15 @@ include_directories(
 
 set(FRONTEND_LIB_SOURCE_FILES
     ${PROJECT_SOURCE_DIR}/src/feature/agast.cpp
-    ${PROJECT_SOURCE_DIR}/src/feature/agast_score.cpp
+    ${PROJECT_SOURCE_DIR}/src/feature/score/agast_score.cpp
     ${PROJECT_SOURCE_DIR}/src/feature/agast_core/AGAST_8/AGAST_8.cpp
+    ${PROJECT_SOURCE_DIR}/src/feature/agast_core/AGAST_8/OffsetsTable_8.cpp
     ${PROJECT_SOURCE_DIR}/src/feature/agast_core/AGAST_12d/AGAST_12d.cpp
     ${PROJECT_SOURCE_DIR}/src/feature/agast_core/AGAST_12d/OffsetsTable_12d.cpp
     ${PROJECT_SOURCE_DIR}/src/feature/agast_core/AGAST_12s/AGAST_12s.cpp
+    ${PROJECT_SOURCE_DIR}/src/feature/agast_core/AGAST_12s/OffsetsTable_12s.cpp
     ${PROJECT_SOURCE_DIR}/src/feature/agast_core/OAST_16/OAST_16.cpp
+    ${PROJECT_SOURCE_DIR}/src/feature/agast_core/OAST_16/OffsetsTable_16.cpp
     ${PROJECT_SOURCE_DIR}/src/feature/offsets/getOffsets.cpp
 )
 
