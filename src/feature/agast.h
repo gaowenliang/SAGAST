@@ -71,25 +71,25 @@ class AgastDetector : public Feature2D
     public:
     enum
     {
-        AGAST_5_8          = 0,
-        AGAST_7_12d        = 1,
-        AGAST_7_12s        = 2,
-        OAST_9_16          = 3,
+        SAGAST_8           = 0,
+        SAGAST_12d         = 1,
+        SAGAST_12s         = 2,
+        SAGAST_16          = 3,
         THRESHOLD          = 10000,
         NONMAX_SUPPRESSION = 10001,
     };
 
     static Ptr< AgastDetector >
-    create( int threshold = 10, bool nonmaxSuppression = true, int type = AgastDetector::OAST_9_16 );
+    create( int threshold = 10, bool nonmaxSuppression = true, int type = AgastDetector::SAGAST_16 );
 
     bool loadCamera( std::string cam_file );
     bool loadMask( std::string file );
 
-    void buildAgastOffsetsTable( );
-    bool saveAgastOffsetsTable( std::string path );
-    bool loadAgastOffsetsTable( std::string path );
+    void buildOffsetsTable( );
+    bool saveOffsetsTable( std::string path );
+    bool loadOffsetsTable( std::string path );
 
-    void AGAST2( InputArray image, std::vector< KeyPoint >& keypoints, int threshold, bool nonmaxSuppression, int type );
+    void SAGAST2( InputArray image, std::vector< KeyPoint >& keypoints, int threshold, bool nonmaxSuppression, int type );
 
     virtual void setThreshold( int threshold ) = 0;
     virtual int getThreshold( ) const          = 0;
@@ -101,20 +101,32 @@ class AgastDetector : public Feature2D
     virtual int getType( ) const     = 0;
 
     private:
-    void calcAGAST_8( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
+    void calc_8( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
+    bool loadOffsetsTable_8( std::string path );
+    bool saveOffsetsTable_8( std::string path );
+    void getOffsets_8( short pixel[16], short rowStride, int xx, int yy );
+    void buildOffsetsTable_8( );
 
-    void calcAGAST_12d( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
-    bool loadAgastOffsetsTable_12d( std::string path );
-    bool saveAgastOffsetsTable_12d( std::string path );
-    void getAgastOffsets_12d( short pixel[16], short rowStride, int xx, int yy );
-    void buildAgastOffsetsTable_12d( );
+    void calc_12d( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
+    bool loadOffsetsTable_12d( std::string path );
+    bool saveOffsetsTable_12d( std::string path );
+    void getOffsets_12d( short pixel[16], short rowStride, int xx, int yy );
+    void buildOffsetsTable_12d( );
 
-    void calcAGAST_12s( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
+    void calc_12s( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
+    bool loadOffsetsTable_12s( std::string path );
+    bool saveOffsetsTable_12s( std::string path );
+    void getOffsets_12s( short pixel[16], short rowStride, int xx, int yy );
+    void buildOffsetsTable_12s( );
 
-    void calcOAST_16( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
+    void calc_16( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
+    bool loadOffsetsTable_16( std::string path );
+    bool saveOffsetsTable_16( std::string path );
+    void getOffsets_16( short pixel[16], short rowStride, int xx, int yy );
+    void buildOffsetsTable_16( );
 
-    void getAgastOffsets( short pixel[16], short rowStride, int type, int xx, int yy );
-    void getAgastOffsets( int pixel[16], int rowStride, int type );
+    void getOffsets( short pixel[16], short rowStride, int type, int xx, int yy );
+    void getOffsets( int pixel[16], int rowStride, int type );
     Eigen::Vector2d calcAngle( const camera_model::CameraPtr cam, const Eigen::Vector2d pu );
     int double2int( double a );
 

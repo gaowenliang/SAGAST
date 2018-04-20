@@ -1,16 +1,16 @@
 #include "../../agast.h"
-#include "../../agast_score.hpp"
+#include "../../score/agast_score.hpp"
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
 
 void
-AgastDetector::buildAgastOffsetsTable_AGAST_7_12d( )
+AgastDetector::buildOffsetsTable_12d( )
 {
     std::cout << "start build AGAST Offsets Table.\n";
 
     int offset_size;
-    if ( getType( ) == AGAST_7_12d )
+    if ( getType( ) == SAGAST_12d )
         offset_size = 12;
 
     int image_height = cam->imageHeight( );
@@ -111,7 +111,7 @@ AgastDetector::buildAgastOffsetsTable_AGAST_7_12d( )
 }
 
 void
-AgastDetector::getAgastOffsets_AGAST_7_12d( short pixel[16], short rowStride, int xx, int yy )
+AgastDetector::getOffsets_12d( short pixel[16], short rowStride, int xx, int yy )
 {
     // cv::Vec24c offset = m_tableOffsets.at< cv::Vec24c >( yy, xx );
     //
@@ -143,7 +143,7 @@ AgastDetector::getAgastOffsets_AGAST_7_12d( short pixel[16], short rowStride, in
 }
 
 bool
-AgastDetector::saveAgastOffsetsTable_AGAST_7_12d( std::string path )
+AgastDetector::saveOffsetsTable_12d( std::string path )
 {
     int image_row = m_tableOffsets.rows;
     int image_col = m_tableOffsets.cols;
@@ -211,7 +211,7 @@ AgastDetector::saveAgastOffsetsTable_AGAST_7_12d( std::string path )
 }
 
 bool
-AgastDetector::loadAgastOffsetsTable_AGAST_7_12d( std::string path )
+AgastDetector::loadOffsetsTable_12d( std::string path )
 {
     cv::Mat save_table0 = cv::imread( path + "/featurePatchTable0.bmp", cv::IMREAD_UNCHANGED );
     cv::Mat save_table1 = cv::imread( path + "/featurePatchTable1.bmp", cv::IMREAD_UNCHANGED );

@@ -5,12 +5,12 @@
 using namespace cv;
 
 void
-AgastDetector::buildOffsetsTable_8( )
+AgastDetector::buildOffsetsTable_16( )
 {
     std::cout << "start build AGAST Offsets Table.\n";
 
     int offset_size;
-    if ( getType( ) == SAGAST_8 )
+    if ( getType( ) == SAGAST_16 )
         offset_size = 8;
 
     int image_height = cam->imageHeight( );
@@ -111,7 +111,7 @@ AgastDetector::buildOffsetsTable_8( )
 }
 
 void
-AgastDetector::getOffsets_8( short pixel[16], short rowStride, int xx, int yy )
+AgastDetector::getOffsets_16( short pixel[16], short rowStride, int xx, int yy )
 {
     // cv::Vec24c offset = m_tableOffsets.at< cv::Vec24c >( yy, xx );
     //
@@ -143,7 +143,7 @@ AgastDetector::getOffsets_8( short pixel[16], short rowStride, int xx, int yy )
 }
 
 bool
-AgastDetector::saveOffsetsTable_8( std::string path )
+AgastDetector::saveOffsetsTable_16( std::string path )
 {
     int image_row = m_tableOffsets.rows;
     int image_col = m_tableOffsets.cols;
@@ -211,7 +211,7 @@ AgastDetector::saveOffsetsTable_8( std::string path )
 }
 
 bool
-AgastDetector::loadOffsetsTable_8( std::string path )
+AgastDetector::loadOffsetsTable_16( std::string path )
 {
     cv::Mat save_table0 = cv::imread( path + "/featurePatchTable0.bmp", cv::IMREAD_UNCHANGED );
     cv::Mat save_table1 = cv::imread( path + "/featurePatchTable1.bmp", cv::IMREAD_UNCHANGED );

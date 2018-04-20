@@ -8,7 +8,7 @@ using namespace cv;
 #if ( defined __i386__ || defined( _M_IX86 ) || defined __x86_64__ || defined( _M_X64 ) )
 
 void
-AgastDetector::calcAGAST_8( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold )
+AgastDetector::calc_8( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold )
 {
 
     cv::Mat img;
@@ -28,17 +28,17 @@ AgastDetector::calcAGAST_8( InputArray _img, std::vector< KeyPoint >& keypoints,
 
     keypoints.resize( 0 );
 
-    int pixel_5_8_[16];
-    getAgastOffsets( pixel_5_8_, ( int )img.step, AgastDetector::AGAST_5_8 );
+    short pixel_5_8_[16];
+    getOffsets_8( pixel_5_8_, ( int )img.step, x, y );
 
-    short offset0 = ( short )pixel_5_8_[0];
-    short offset1 = ( short )pixel_5_8_[1];
-    short offset2 = ( short )pixel_5_8_[2];
-    short offset3 = ( short )pixel_5_8_[3];
-    short offset4 = ( short )pixel_5_8_[4];
-    short offset5 = ( short )pixel_5_8_[5];
-    short offset6 = ( short )pixel_5_8_[6];
-    short offset7 = ( short )pixel_5_8_[7];
+    short offset0 = pixel_5_8_[0];
+    short offset1 = pixel_5_8_[1];
+    short offset2 = pixel_5_8_[2];
+    short offset3 = pixel_5_8_[3];
+    short offset4 = pixel_5_8_[4];
+    short offset5 = pixel_5_8_[5];
+    short offset6 = pixel_5_8_[6];
+    short offset7 = pixel_5_8_[7];
 
     width = xsize;
 
@@ -55,8 +55,10 @@ AgastDetector::calcAGAST_8( InputArray _img, std::vector< KeyPoint >& keypoints,
             else
             {
                 const unsigned char* const ptr = img.ptr( ) + y * width + x;
-                const int cb                   = *ptr + threshold;
-                const int c_b                  = *ptr - threshold;
+
+                const int cb  = *ptr + threshold;
+                const int c_b = *ptr - threshold;
+
                 if ( ptr[offset0] > cb )
                     if ( ptr[offset2] > cb )
                         if ( ptr[offset3] > cb )

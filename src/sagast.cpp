@@ -109,7 +109,7 @@ main( )
     frame_color.copyTo( frame_agast12_c );
 
     cv::Ptr< cv::AgastDetector > agast12
-    = cv::AgastDetector::create( 40, true, cv::AgastDetector::AGAST_7_12d );
+    = cv::AgastDetector::create( 40, true, cv::AgastDetector::SAGAST_12d );
 
     agast12->loadMask( file_mask );
     agast12->loadCamera( file_cam );
@@ -120,12 +120,12 @@ main( )
         t = getTickCount( );
         if ( 0 )
         {
-            agast12->buildAgastOffsetsTable( );
-            agast12->saveAgastOffsetsTable( "/home/gao/ws/src/vins/config/dual/table" );
+            agast12->buildOffsetsTable( );
+            agast12->saveOffsetsTable( "/home/gao/ws/src/vins/config/dual/table" );
         }
         else
         {
-            agast12->loadAgastOffsetsTable( "/home/gao/ws/src/vins/config/dual/table" );
+            agast12->loadOffsetsTable( "/home/gao/ws/src/vins/config/dual/table" );
         }
         t = ( ( double )getTickCount( ) - t ) / getTickFrequency( );
         sum_t += resize_num * t * 1000;

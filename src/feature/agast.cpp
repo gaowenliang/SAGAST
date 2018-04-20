@@ -43,7 +43,7 @@ The references are:
 */
 
 #include "agast.h"
-#include "agast_score.hpp"
+#include "score/agast_score.hpp"
 #include <iostream>
 #include <opencv2/core/core.hpp>
 
@@ -73,7 +73,7 @@ class AgastDetector_Impl : public AgastDetector
             gray = ogray;
         }
         keypoints.clear( );
-        AGAST2( gray, keypoints, threshold, nonmaxSuppression, type );
+        SAGAST2( gray, keypoints, threshold, nonmaxSuppression, type );
         KeyPointsFilter::runByPixelsMask( keypoints, mask );
     }
 
@@ -135,7 +135,7 @@ AgastDetector::loadMask( std::string file )
 }
 
 void
-AgastDetector::AGAST2( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold, bool nonmax_suppression, int type )
+AgastDetector::SAGAST2( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold, bool nonmax_suppression, int type )
 {
     std::vector< KeyPoint > kpts;
 
@@ -151,9 +151,9 @@ AgastDetector::AGAST2( InputArray _img, std::vector< KeyPoint >& keypoints, int 
         // case AgastDetector::OAST_9_16:
         //     calcOAST_9_16( _img, kpts, threshold );
         //     break;
-        case AgastDetector::AGAST_7_12d:
+        case AgastDetector::SAGAST_12d:
         {
-            calcAGAST_7_12d( _img, kpts, threshold );
+            calc_12d( _img, kpts, threshold );
             break;
         }
     }
@@ -186,11 +186,11 @@ AgastDetector::AGAST2( InputArray _img, std::vector< KeyPoint >& keypoints, int 
             //      &img.at< uchar >( ( int )kpt->pt.y, ( int )kpt->pt.x ),
             //      pixel_, threshold );
             //      break;
-            case AgastDetector::AGAST_7_12d:
+            case AgastDetector::SAGAST_12d:
             {
-                getAgastOffsets( pixel_, ( short )img.step, type, kpt->pt.x, kpt->pt.y );
+                getOffsets_12d( pixel_, ( short )img.step, kpt->pt.x, kpt->pt.y );
 
-                kpt->response = ( float )agastCornerScore< AgastDetector::AGAST_7_12d >(
+                kpt->response = ( float )agastCornerScore< AgastDetector::SAGAST_12d >(
                 &img.at< uchar >( ( int )kpt->pt.y, ( int )kpt->pt.x ), pixel_, threshold );
 
                 break;
