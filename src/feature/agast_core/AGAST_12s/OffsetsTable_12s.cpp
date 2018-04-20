@@ -10,8 +10,8 @@ AgastDetector::buildOffsetsTable_12s( )
     std::cout << "start build AGAST Offsets Table.\n";
 
     int offset_size;
-    if ( getType( ) == SAGAST_8 )
-        offset_size = 8;
+    if ( getType( ) == SAGAST_12s )
+        offset_size = 12;
 
     int image_height = cam->imageHeight( );
     int image_width  = cam->imageWidth( );
@@ -20,16 +20,16 @@ AgastDetector::buildOffsetsTable_12s( )
     m_tableOffsets = cv::Mat( image_height, image_width, CV_8SC24, cv::Scalar( 0 ) );
 
     std::vector< Eigen::Vector2d > offset;
-    offset.push_back( Eigen::Vector2d( -3, 0 ) );
+    offset.push_back( Eigen::Vector2d( -2, 0 ) );
     offset.push_back( Eigen::Vector2d( -2, -1 ) );
     offset.push_back( Eigen::Vector2d( -1, -2 ) );
-    offset.push_back( Eigen::Vector2d( 0, -3 ) );
+    offset.push_back( Eigen::Vector2d( 0, -2 ) );
     offset.push_back( Eigen::Vector2d( 1, -2 ) );
     offset.push_back( Eigen::Vector2d( 2, -1 ) );
-    offset.push_back( Eigen::Vector2d( 3, 0 ) );
+    offset.push_back( Eigen::Vector2d( 2, 0 ) );
     offset.push_back( Eigen::Vector2d( 2, 1 ) );
     offset.push_back( Eigen::Vector2d( 1, 2 ) );
-    offset.push_back( Eigen::Vector2d( 0, 3 ) );
+    offset.push_back( Eigen::Vector2d( 0, 2 ) );
     offset.push_back( Eigen::Vector2d( -1, 2 ) );
     offset.push_back( Eigen::Vector2d( -2, 1 ) );
 
