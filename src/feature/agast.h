@@ -101,15 +101,17 @@ class AgastDetector : public Feature2D
     virtual int getType( ) const     = 0;
 
     private:
-    void calcAGAST_5_8( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
-    void calcAGAST_7_12s( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
-    void calcOAST_9_16( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
+    void calcAGAST_8( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
 
     void calcAGAST_12d( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
     bool loadAgastOffsetsTable_12d( std::string path );
     bool saveAgastOffsetsTable_12d( std::string path );
     void getAgastOffsets_12d( short pixel[16], short rowStride, int xx, int yy );
     void buildAgastOffsetsTable_12d( );
+
+    void calcAGAST_12s( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
+
+    void calcOAST_16( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold );
 
     void getAgastOffsets( short pixel[16], short rowStride, int type, int xx, int yy );
     void getAgastOffsets( int pixel[16], int rowStride, int type );
