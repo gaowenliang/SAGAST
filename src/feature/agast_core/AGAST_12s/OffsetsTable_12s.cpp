@@ -128,18 +128,18 @@ AgastDetector::getOffsets_12s( short pixel[16], short rowStride, int xx, int yy 
     //     pixel[k] = short( p[2 * k + xx24] ) + short( p[2 * k + xx24 + 1] ) * rowStride;
     // }
 
-    pixel[0]  = short( p[0 + xx24] ) + short( p[0 + xx24 + 1] ) * rowStride;
-    pixel[1]  = short( p[2 + xx24] ) + short( p[2 + xx24 + 1] ) * rowStride;
-    pixel[2]  = short( p[4 + xx24] ) + short( p[4 + xx24 + 1] ) * rowStride;
-    pixel[3]  = short( p[6 + xx24] ) + short( p[6 + xx24 + 1] ) * rowStride;
-    pixel[4]  = short( p[8 + xx24] ) + short( p[8 + xx24 + 1] ) * rowStride;
-    pixel[5]  = short( p[10 + xx24] ) + short( p[10 + xx24 + 1] ) * rowStride;
-    pixel[6]  = short( p[12 + xx24] ) + short( p[12 + xx24 + 1] ) * rowStride;
-    pixel[7]  = short( p[14 + xx24] ) + short( p[14 + xx24 + 1] ) * rowStride;
-    pixel[8]  = short( p[16 + xx24] ) + short( p[16 + xx24 + 1] ) * rowStride;
-    pixel[9]  = short( p[18 + xx24] ) + short( p[18 + xx24 + 1] ) * rowStride;
-    pixel[10] = short( p[20 + xx24] ) + short( p[20 + xx24 + 1] ) * rowStride;
-    pixel[11] = short( p[22 + xx24] ) + short( p[22 + xx24 + 1] ) * rowStride;
+    pixel[0]  = short( p[0 + xx24] ) + short( p[1 + xx24] ) * rowStride;
+    pixel[1]  = short( p[2 + xx24] ) + short( p[3 + xx24] ) * rowStride;
+    pixel[2]  = short( p[4 + xx24] ) + short( p[5 + xx24] ) * rowStride;
+    pixel[3]  = short( p[6 + xx24] ) + short( p[7 + xx24] ) * rowStride;
+    pixel[4]  = short( p[8 + xx24] ) + short( p[9 + xx24] ) * rowStride;
+    pixel[5]  = short( p[10 + xx24] ) + short( p[11 + xx24] ) * rowStride;
+    pixel[6]  = short( p[12 + xx24] ) + short( p[13 + xx24] ) * rowStride;
+    pixel[7]  = short( p[14 + xx24] ) + short( p[15 + xx24] ) * rowStride;
+    pixel[8]  = short( p[16 + xx24] ) + short( p[17 + xx24] ) * rowStride;
+    pixel[9]  = short( p[18 + xx24] ) + short( p[19 + xx24] ) * rowStride;
+    pixel[10] = short( p[20 + xx24] ) + short( p[21 + xx24] ) * rowStride;
+    pixel[11] = short( p[22 + xx24] ) + short( p[23 + xx24] ) * rowStride;
 }
 
 bool

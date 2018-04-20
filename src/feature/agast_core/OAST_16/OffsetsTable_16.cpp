@@ -11,27 +11,31 @@ AgastDetector::buildOffsetsTable_16( )
 
     int offset_size;
     if ( getType( ) == SAGAST_16 )
-        offset_size = 8;
+        offset_size = 16;
 
     int image_height = cam->imageHeight( );
     int image_width  = cam->imageWidth( );
     //    std::cout << image_height << " " << image_width << "\n";
 
-    m_tableOffsets = cv::Mat( image_height, image_width, CV_8SC24, cv::Scalar( 0 ) );
+    m_tableOffsets = cv::Mat( image_height, image_width, CV_8SC32, cv::Scalar( 0 ) );
 
     std::vector< Eigen::Vector2d > offset;
     offset.push_back( Eigen::Vector2d( -3, 0 ) );
-    offset.push_back( Eigen::Vector2d( -2, -1 ) );
-    offset.push_back( Eigen::Vector2d( -1, -2 ) );
+    offset.push_back( Eigen::Vector2d( -3, -1 ) );
+    offset.push_back( Eigen::Vector2d( -2, -2 ) );
+    offset.push_back( Eigen::Vector2d( -1, -3 ) );
     offset.push_back( Eigen::Vector2d( 0, -3 ) );
-    offset.push_back( Eigen::Vector2d( 1, -2 ) );
-    offset.push_back( Eigen::Vector2d( 2, -1 ) );
+    offset.push_back( Eigen::Vector2d( 1, -3 ) );
+    offset.push_back( Eigen::Vector2d( 2, -2 ) );
+    offset.push_back( Eigen::Vector2d( 3, -1 ) );
     offset.push_back( Eigen::Vector2d( 3, 0 ) );
-    offset.push_back( Eigen::Vector2d( 2, 1 ) );
-    offset.push_back( Eigen::Vector2d( 1, 2 ) );
+    offset.push_back( Eigen::Vector2d( 3, 1 ) );
+    offset.push_back( Eigen::Vector2d( 2, 2 ) );
+    offset.push_back( Eigen::Vector2d( 1, 3 ) );
     offset.push_back( Eigen::Vector2d( 0, 3 ) );
-    offset.push_back( Eigen::Vector2d( -1, 2 ) );
-    offset.push_back( Eigen::Vector2d( -2, 1 ) );
+    offset.push_back( Eigen::Vector2d( -1, 3 ) );
+    offset.push_back( Eigen::Vector2d( -2, 2 ) );
+    offset.push_back( Eigen::Vector2d( -3, 1 ) );
 
     for ( int row_index = 0; row_index < image_height; ++row_index )
         for ( int col_index = 0; col_index < image_width; ++col_index )
@@ -89,7 +93,7 @@ AgastDetector::buildOffsetsTable_16( )
             offset_P_u00 = q_v1v1 * q_v1v0 * P_u00;
             cam->spaceToPlane( offset_P_u00, offset_p_u00 );
 
-            cv::Vec24c offset_pt;
+            cv::Vec32c offset_pt;
             for ( int i = 0; i < offset_size; ++i )
             {
                 p_u[i] = p_u00 + offset[i];
@@ -101,7 +105,7 @@ AgastDetector::buildOffsetsTable_16( )
                 offset_pt[2 * i + 1] = char( double2int( ( offset_p_u[i] - offset_p_u00 )( 1 ) ) );
             }
 
-            m_tableOffsets.at< cv::Vec24c >( row_index, col_index ) = offset_pt;
+            m_tableOffsets.at< cv::Vec32c >( row_index, col_index ) = offset_pt;
         }
 
     //    std::string featureTable = "/home/gao/ws/src/vins/config/dual/featureTable.bmp";
@@ -121,25 +125,29 @@ AgastDetector::getOffsets_16( short pixel[16], short rowStride, int xx, int yy )
     //}
 
     char* p  = m_tableOffsets.ptr< char >( yy );
-    int xx24 = xx * 24;
+    int xx32 = xx * 32;
 
     // for ( int k = 0; k < 12; k++ )
     // {
-    //     pixel[k] = short( p[2 * k + xx24] ) + short( p[2 * k + xx24 + 1] ) * rowStride;
+    //     pixel[k] = short( p[2 * k + xx32] ) + short( p[2 * k + xx32 + 1] ) * rowStride;
     // }
 
-    pixel[0]  = short( p[0 + xx24] ) + short( p[0 + xx24 + 1] ) * rowStride;
-    pixel[1]  = short( p[2 + xx24] ) + short( p[2 + xx24 + 1] ) * rowStride;
-    pixel[2]  = short( p[4 + xx24] ) + short( p[4 + xx24 + 1] ) * rowStride;
-    pixel[3]  = short( p[6 + xx24] ) + short( p[6 + xx24 + 1] ) * rowStride;
-    pixel[4]  = short( p[8 + xx24] ) + short( p[8 + xx24 + 1] ) * rowStride;
-    pixel[5]  = short( p[10 + xx24] ) + short( p[10 + xx24 + 1] ) * rowStride;
-    pixel[6]  = short( p[12 + xx24] ) + short( p[12 + xx24 + 1] ) * rowStride;
-    pixel[7]  = short( p[14 + xx24] ) + short( p[14 + xx24 + 1] ) * rowStride;
-    pixel[8]  = short( p[16 + xx24] ) + short( p[16 + xx24 + 1] ) * rowStride;
-    pixel[9]  = short( p[18 + xx24] ) + short( p[18 + xx24 + 1] ) * rowStride;
-    pixel[10] = short( p[20 + xx24] ) + short( p[20 + xx24 + 1] ) * rowStride;
-    pixel[11] = short( p[22 + xx24] ) + short( p[22 + xx24 + 1] ) * rowStride;
+    pixel[0]  = short( p[0 + xx32] ) + short( p[1 + xx32] ) * rowStride;
+    pixel[1]  = short( p[2 + xx32] ) + short( p[3 + xx32] ) * rowStride;
+    pixel[2]  = short( p[4 + xx32] ) + short( p[5 + xx32] ) * rowStride;
+    pixel[3]  = short( p[6 + xx32] ) + short( p[7 + xx32] ) * rowStride;
+    pixel[4]  = short( p[8 + xx32] ) + short( p[9 + xx32] ) * rowStride;
+    pixel[5]  = short( p[10 + xx32] ) + short( p[11 + xx32] ) * rowStride;
+    pixel[6]  = short( p[12 + xx32] ) + short( p[13 + xx32] ) * rowStride;
+    pixel[7]  = short( p[14 + xx32] ) + short( p[15 + xx32] ) * rowStride;
+    pixel[8]  = short( p[16 + xx32] ) + short( p[17 + xx32] ) * rowStride;
+    pixel[9]  = short( p[18 + xx32] ) + short( p[19 + xx32] ) * rowStride;
+    pixel[10] = short( p[20 + xx32] ) + short( p[21 + xx32] ) * rowStride;
+    pixel[11] = short( p[22 + xx32] ) + short( p[23 + xx32] ) * rowStride;
+    pixel[12] = short( p[24 + xx32] ) + short( p[25 + xx32] ) * rowStride;
+    pixel[13] = short( p[26 + xx32] ) + short( p[27 + xx32] ) * rowStride;
+    pixel[14] = short( p[28 + xx32] ) + short( p[29 + xx32] ) * rowStride;
+    pixel[15] = short( p[30 + xx32] ) + short( p[31 + xx32] ) * rowStride;
 }
 
 bool
@@ -156,12 +164,15 @@ AgastDetector::saveOffsetsTable_16( std::string path )
     cv::Mat save_table5( image_row, image_col, CV_8UC3, cv::Scalar( 0 ) );
     cv::Mat save_table6( image_row, image_col, CV_8UC3, cv::Scalar( 0 ) );
     cv::Mat save_table7( image_row, image_col, CV_8UC3, cv::Scalar( 0 ) );
+    cv::Mat save_table8( image_row, image_col, CV_8UC3, cv::Scalar( 0 ) );
+    cv::Mat save_table9( image_row, image_col, CV_8UC3, cv::Scalar( 0 ) );
+    cv::Mat save_table10( image_row, image_col, CV_8UC3, cv::Scalar( 0 ) );
 
-    cv::Vec24c offset_pt;
+    cv::Vec32c offset_pt;
     for ( int row_index = 0; row_index < image_row; ++row_index )
         for ( int col_index = 0; col_index < image_col; ++col_index )
         {
-            offset_pt = m_tableOffsets.at< cv::Vec24c >( row_index, col_index );
+            offset_pt = m_tableOffsets.at< cv::Vec32c >( row_index, col_index );
 
             Vec3b table0 = Vec3b( offset_pt[0] + char( 10 ),    //
                                   offset_pt[1] + char( 10 ),    //
@@ -187,15 +198,27 @@ AgastDetector::saveOffsetsTable_16( std::string path )
             Vec3b table7 = Vec3b( offset_pt[21] + char( 10 ),   //
                                   offset_pt[22] + char( 10 ),   //
                                   offset_pt[23] + char( 10 ) ); //
+            Vec3b table8 = Vec3b( offset_pt[24] + char( 10 ),   //
+                                  offset_pt[25] + char( 10 ),   //
+                                  offset_pt[26] + char( 10 ) ); //
+            Vec3b table9 = Vec3b( offset_pt[27] + char( 10 ),   //
+                                  offset_pt[28] + char( 10 ),   //
+                                  offset_pt[29] + char( 10 ) ); //
+            Vec3b table10 = Vec3b( offset_pt[30] + char( 10 ),  //
+                                   offset_pt[31] + char( 10 ),  //
+                                   0 );                         //
 
-            save_table0.at< cv::Vec3b >( row_index, col_index ) = table0;
-            save_table1.at< cv::Vec3b >( row_index, col_index ) = table1;
-            save_table2.at< cv::Vec3b >( row_index, col_index ) = table2;
-            save_table3.at< cv::Vec3b >( row_index, col_index ) = table3;
-            save_table4.at< cv::Vec3b >( row_index, col_index ) = table4;
-            save_table5.at< cv::Vec3b >( row_index, col_index ) = table5;
-            save_table6.at< cv::Vec3b >( row_index, col_index ) = table6;
-            save_table7.at< cv::Vec3b >( row_index, col_index ) = table7;
+            save_table0.at< cv::Vec3b >( row_index, col_index )  = table0;
+            save_table1.at< cv::Vec3b >( row_index, col_index )  = table1;
+            save_table2.at< cv::Vec3b >( row_index, col_index )  = table2;
+            save_table3.at< cv::Vec3b >( row_index, col_index )  = table3;
+            save_table4.at< cv::Vec3b >( row_index, col_index )  = table4;
+            save_table5.at< cv::Vec3b >( row_index, col_index )  = table5;
+            save_table6.at< cv::Vec3b >( row_index, col_index )  = table6;
+            save_table7.at< cv::Vec3b >( row_index, col_index )  = table7;
+            save_table8.at< cv::Vec3b >( row_index, col_index )  = table8;
+            save_table9.at< cv::Vec3b >( row_index, col_index )  = table9;
+            save_table10.at< cv::Vec3b >( row_index, col_index ) = table10;
         }
 
     cv::imwrite( path + "/featurePatchTable0.bmp", save_table0 );
@@ -206,6 +229,9 @@ AgastDetector::saveOffsetsTable_16( std::string path )
     cv::imwrite( path + "/featurePatchTable5.bmp", save_table5 );
     cv::imwrite( path + "/featurePatchTable6.bmp", save_table6 );
     cv::imwrite( path + "/featurePatchTable7.bmp", save_table7 );
+    cv::imwrite( path + "/featurePatchTable8.bmp", save_table8 );
+    cv::imwrite( path + "/featurePatchTable9.bmp", save_table9 );
+    cv::imwrite( path + "/featurePatchTable10.bmp", save_table10 );
 
     return true;
 }
@@ -221,33 +247,42 @@ AgastDetector::loadOffsetsTable_16( std::string path )
     cv::Mat save_table5 = cv::imread( path + "/featurePatchTable5.bmp", cv::IMREAD_UNCHANGED );
     cv::Mat save_table6 = cv::imread( path + "/featurePatchTable6.bmp", cv::IMREAD_UNCHANGED );
     cv::Mat save_table7 = cv::imread( path + "/featurePatchTable7.bmp", cv::IMREAD_UNCHANGED );
+    cv::Mat save_table8 = cv::imread( path + "/featurePatchTable8.bmp", cv::IMREAD_UNCHANGED );
+    cv::Mat save_table9 = cv::imread( path + "/featurePatchTable9.bmp", cv::IMREAD_UNCHANGED );
+    cv::Mat save_table10 = cv::imread( path + "/featurePatchTable10.bmp", cv::IMREAD_UNCHANGED );
 
     int image_row = save_table0.rows;
     int image_col = save_table0.cols;
 
-    m_tableOffsets = cv::Mat( image_row, image_col, CV_8SC24, cv::Scalar( 0 ) );
+    m_tableOffsets = cv::Mat( image_row, image_col, CV_8SC32, cv::Scalar( 0 ) );
 
-    cv::Vec24c offset_pt;
+    cv::Vec32c offset_pt;
     for ( int row_index = 0; row_index < image_row; ++row_index )
         for ( int col_index = 0; col_index < image_col; ++col_index )
         {
-            Vec3b table_src0 = save_table0.at< cv::Vec3b >( row_index, col_index );
-            Vec3b table_src1 = save_table1.at< cv::Vec3b >( row_index, col_index );
-            Vec3b table_src2 = save_table2.at< cv::Vec3b >( row_index, col_index );
-            Vec3b table_src3 = save_table3.at< cv::Vec3b >( row_index, col_index );
-            Vec3b table_src4 = save_table4.at< cv::Vec3b >( row_index, col_index );
-            Vec3b table_src5 = save_table5.at< cv::Vec3b >( row_index, col_index );
-            Vec3b table_src6 = save_table6.at< cv::Vec3b >( row_index, col_index );
-            Vec3b table_src7 = save_table7.at< cv::Vec3b >( row_index, col_index );
+            Vec3b table_src0  = save_table0.at< cv::Vec3b >( row_index, col_index );
+            Vec3b table_src1  = save_table1.at< cv::Vec3b >( row_index, col_index );
+            Vec3b table_src2  = save_table2.at< cv::Vec3b >( row_index, col_index );
+            Vec3b table_src3  = save_table3.at< cv::Vec3b >( row_index, col_index );
+            Vec3b table_src4  = save_table4.at< cv::Vec3b >( row_index, col_index );
+            Vec3b table_src5  = save_table5.at< cv::Vec3b >( row_index, col_index );
+            Vec3b table_src6  = save_table6.at< cv::Vec3b >( row_index, col_index );
+            Vec3b table_src7  = save_table7.at< cv::Vec3b >( row_index, col_index );
+            Vec3b table_src8  = save_table8.at< cv::Vec3b >( row_index, col_index );
+            Vec3b table_src9  = save_table9.at< cv::Vec3b >( row_index, col_index );
+            Vec3b table_src10 = save_table10.at< cv::Vec3b >( row_index, col_index );
 
-            Vec3c table0 = table_src0;
-            Vec3c table1 = table_src1;
-            Vec3c table2 = table_src2;
-            Vec3c table3 = table_src3;
-            Vec3c table4 = table_src4;
-            Vec3c table5 = table_src5;
-            Vec3c table6 = table_src6;
-            Vec3c table7 = table_src7;
+            Vec3c table0  = table_src0;
+            Vec3c table1  = table_src1;
+            Vec3c table2  = table_src2;
+            Vec3c table3  = table_src3;
+            Vec3c table4  = table_src4;
+            Vec3c table5  = table_src5;
+            Vec3c table6  = table_src6;
+            Vec3c table7  = table_src7;
+            Vec3c table8  = table_src8;
+            Vec3c table9  = table_src9;
+            Vec3c table10 = table_src10;
 
             for ( int i = 0; i < 3; ++i )
             {
@@ -259,9 +294,13 @@ AgastDetector::loadOffsetsTable_16( std::string path )
                 offset_pt[i + 15] = table5[i] + char( -10 );
                 offset_pt[i + 18] = table6[i] + char( -10 );
                 offset_pt[i + 21] = table7[i] + char( -10 );
+                offset_pt[i + 24] = table8[i] + char( -10 );
+                offset_pt[i + 27] = table9[i] + char( -10 );
             }
+            offset_pt[30] = table10[0] + char( -10 );
+            offset_pt[31] = table10[1] + char( -10 );
 
-            m_tableOffsets.at< cv::Vec24c >( row_index, col_index ) = offset_pt;
+            m_tableOffsets.at< cv::Vec32c >( row_index, col_index ) = offset_pt;
         }
 
     return true;

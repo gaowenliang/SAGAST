@@ -152,12 +152,14 @@ AgastDetector::SAGAST2( InputArray _img, std::vector< KeyPoint >& keypoints, int
             calc_12s( _img, kpts, threshold );
             break;
         }
-        // case AgastDetector::OAST_9_16:
-        //     calcOAST_9_16( _img, kpts, threshold );
-        //     break;
         case AgastDetector::SAGAST_12d:
         {
             calc_12d( _img, kpts, threshold );
+            break;
+        }
+        case AgastDetector::SAGAST_16:
+        {
+            calc_16( _img, kpts, threshold );
             break;
         }
     }
@@ -189,17 +191,20 @@ AgastDetector::SAGAST2( InputArray _img, std::vector< KeyPoint >& keypoints, int
                 &img.at< uchar >( ( int )kpt->pt.y, ( int )kpt->pt.x ), pixel_, threshold );
                 break;
             }
-            //  case AgastDetector::OAST_9_16:
-            //      kpt->response = ( float )agastCornerScore<
-            //      AgastDetector::OAST_9_16 >(
-            //      &img.at< uchar >( ( int )kpt->pt.y, ( int )kpt->pt.x ),
-            //      pixel_, threshold );
-            //      break;
             case AgastDetector::SAGAST_12d:
             {
                 getOffsets_12d( pixel_, ( short )img.step, kpt->pt.x, kpt->pt.y );
 
                 kpt->response = ( float )agastCornerScore< AgastDetector::SAGAST_12d >(
+                &img.at< uchar >( ( int )kpt->pt.y, ( int )kpt->pt.x ), pixel_, threshold );
+
+                break;
+            }
+            case AgastDetector::SAGAST_16:
+            {
+                getOffsets_16( pixel_, ( short )img.step, kpt->pt.x, kpt->pt.y );
+
+                kpt->response = ( float )agastCornerScore< AgastDetector::SAGAST_16 >(
                 &img.at< uchar >( ( int )kpt->pt.y, ( int )kpt->pt.x ), pixel_, threshold );
 
                 break;
