@@ -57,10 +57,11 @@ AgastDetector::calc_12d( InputArray _img, std::vector< KeyPoint >& keypoints, in
                 break;
             else
             {
-                const unsigned char* const ptr  = img.ptr( ) + y * width + x;
                 const unsigned char* const mask = m_mask.ptr( ) + y * width + x;
                 if ( mask[0] < 20 )
                     continue;
+
+                const unsigned char* const ptr = img.ptr( ) + y * width + x;
 
                 const int cb  = *ptr + threshold;
                 const int c_b = *ptr - threshold;
@@ -1139,11 +1140,11 @@ AgastDetector::calc_12d( InputArray _img, std::vector< KeyPoint >& keypoints, in
                 break;
             else
             {
-                const unsigned char* const ptr = img.ptr( ) + y * width + x;
-
                 const unsigned char* const mask = m_mask.ptr( ) + y * width + x;
                 if ( mask[0] < 20 )
                     continue;
+
+                const unsigned char* const ptr = img.ptr( ) + y * width + x;
 
                 const int cb  = *ptr + threshold;
                 const int c_b = *ptr - threshold;

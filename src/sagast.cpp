@@ -101,9 +101,17 @@ main( )
     cv::namedWindow( "agast16", cv::WINDOW_NORMAL );
     imshow( "agast16", frame_agast16_c );
 
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    Mat frame = vignetting->removeLUT( frame_in );
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // 12d /////////////////////////////////////////////////////////////////////////////////
+
     keyPoints_1.clear( );
     keyPoints_2.clear( );
-    Mat frame = vignetting->removeLUT( frame_in );
     Mat frame_agast12, frame_agast12_c;
     frame.copyTo( frame_agast12 ); // TODO
     frame_color.copyTo( frame_agast12_c );
@@ -154,6 +162,62 @@ main( )
     cv::namedWindow( "agast12", cv::WINDOW_NORMAL );
     imshow( "agast12", frame_agast12_c );
 
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // 8 //////////////////////////////////////////////////////////////////////////////////
+
+    keyPoints_1.clear( );
+    keyPoints_2.clear( );
+    Mat frame_agast8, frame_agast8_c;
+    frame.copyTo( frame_agast8 ); // TODO
+    frame_color.copyTo( frame_agast8_c );
+
+    cv::Ptr< cv::AgastDetector > agast8
+    = cv::AgastDetector::create( 40, true, cv::AgastDetector::SAGAST_8 );
+
+    agast8->loadMask( file_mask );
+    agast8->loadCamera( file_cam );
+
+    sum_t = 0;
+    for ( int i = 0; i < 1; ++i )
+    {
+        t = getTickCount( );
+        if ( 1 )
+        {
+            agast8->buildOffsetsTable( );
+            agast8->saveOffsetsTable( "/home/gao/ws/src/vins/config/dual/table" );
+        }
+        else
+        {
+            agast8->loadOffsetsTable( "/home/gao/ws/src/vins/config/dual/table" );
+        }
+        t = ( ( double )getTickCount( ) - t ) / getTickFrequency( );
+        sum_t += resize_num * t * 1000;
+    }
+    std::cout << "avg cost " << sum_t / 1000 << " ms" << std::endl;
+    std::cout << "agast8 table cost " << resize_num * t * 1000 << " ms" << std::endl;
+
+    sum_t = 0;
+    for ( int i = 0; i < 1; ++i )
+    {
+        t = getTickCount( );
+        agast8->detect( frame_agast8, keyPoints_1 );
+        t = ( ( double )getTickCount( ) - t ) / getTickFrequency( );
+        sum_t += resize_num * t * 1000;
+    }
+    insertionSort( keyPoints_1 );
+    for ( int pt_index = 0; pt_index < 100; ++pt_index )
+    {
+        keyPoints_2.push_back( keyPoints_1[pt_index] );
+    }
+    drawKeypoints( frame_agast8_c, keyPoints_1, frame_agast8_c, Scalar( 0, 0, 255 ), DrawMatchesFlags::DRAW_OVER_OUTIMG );
+    std::cout << "avg cost " << sum_t / 1000 << " ms" << std::endl;
+    std::cout << "agast8 cost " << resize_num * t * 1000 << " ms" << std::endl;
+    std::cout << "size " << keyPoints_1.size( ) << std::endl;
+
+    cv::namedWindow( "agast8", cv::WINDOW_NORMAL );
+    imshow( "agast8", frame_agast8_c );
     //    keyPoints_1.clear( );
 
     // Mat frame_orb;

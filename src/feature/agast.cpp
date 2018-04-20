@@ -142,9 +142,11 @@ AgastDetector::SAGAST2( InputArray _img, std::vector< KeyPoint >& keypoints, int
     // detect
     switch ( type )
     {
-        // case AgastDetector::AGAST_5_8:
-        //     calcAGAST_5_8( _img, kpts, threshold );
-        //     break;
+        case AgastDetector::SAGAST_8:
+        {
+            calc_8( _img, kpts, threshold );
+            break;
+        }
         // case AgastDetector::AGAST_7_12s:
         //     calcAGAST_7_12s( _img, kpts, threshold );
         //     break;
@@ -168,12 +170,15 @@ AgastDetector::SAGAST2( InputArray _img, std::vector< KeyPoint >& keypoints, int
     {
         switch ( type )
         {
-            //  case AgastDetector::AGAST_5_8:
-            //      kpt->response = ( float )agastCornerScore<
-            //      AgastDetector::AGAST_5_8 >(
-            //      &img.at< uchar >( ( int )kpt->pt.y, ( int )kpt->pt.x ),
-            //      pixel_, threshold );
-            //      break;
+            case AgastDetector::SAGAST_8:
+            {
+                getOffsets_8( pixel_, ( short )img.step, kpt->pt.x, kpt->pt.y );
+
+                kpt->response = ( float )agastCornerScore< AgastDetector::SAGAST_8 >(
+                &img.at< uchar >( ( int )kpt->pt.y, ( int )kpt->pt.x ), pixel_, threshold );
+
+                break;
+            }
             //  case AgastDetector::AGAST_7_12s:
             //      kpt->response = ( float )agastCornerScore<
             //      AgastDetector::AGAST_7_12s >(

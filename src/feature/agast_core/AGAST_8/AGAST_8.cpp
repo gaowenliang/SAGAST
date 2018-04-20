@@ -29,16 +29,14 @@ AgastDetector::calc_8( InputArray _img, std::vector< KeyPoint >& keypoints, int 
     keypoints.resize( 0 );
 
     short pixel_5_8_[16];
-    getOffsets_8( pixel_5_8_, ( int )img.step, x, y );
-
-    short offset0 = pixel_5_8_[0];
-    short offset1 = pixel_5_8_[1];
-    short offset2 = pixel_5_8_[2];
-    short offset3 = pixel_5_8_[3];
-    short offset4 = pixel_5_8_[4];
-    short offset5 = pixel_5_8_[5];
-    short offset6 = pixel_5_8_[6];
-    short offset7 = pixel_5_8_[7];
+    short offset0;
+    short offset1;
+    short offset2;
+    short offset3;
+    short offset4;
+    short offset5;
+    short offset6;
+    short offset7;
 
     width = xsize;
 
@@ -54,10 +52,26 @@ AgastDetector::calc_8( InputArray _img, std::vector< KeyPoint >& keypoints, int 
                 break;
             else
             {
+
+                const unsigned char* const mask = m_mask.ptr( ) + y * width + x;
+                if ( mask[0] < 20 )
+                    continue;
+
                 const unsigned char* const ptr = img.ptr( ) + y * width + x;
 
                 const int cb  = *ptr + threshold;
                 const int c_b = *ptr - threshold;
+
+                getOffsets_8( pixel_5_8_, ( short )img.step, x, y );
+
+                offset0 = pixel_5_8_[0];
+                offset1 = pixel_5_8_[1];
+                offset2 = pixel_5_8_[2];
+                offset3 = pixel_5_8_[3];
+                offset4 = pixel_5_8_[4];
+                offset5 = pixel_5_8_[5];
+                offset6 = pixel_5_8_[6];
+                offset7 = pixel_5_8_[7];
 
                 if ( ptr[offset0] > cb )
                     if ( ptr[offset2] > cb )
@@ -356,9 +370,26 @@ AgastDetector::calc_8( InputArray _img, std::vector< KeyPoint >& keypoints, int 
                 break;
             else
             {
+                const unsigned char* const mask = m_mask.ptr( ) + y * width + x;
+                if ( mask[0] < 20 )
+                    continue;
+
                 const unsigned char* const ptr = img.ptr( ) + y * width + x;
-                const int cb                   = *ptr + threshold;
-                const int c_b                  = *ptr - threshold;
+
+                const int cb  = *ptr + threshold;
+                const int c_b = *ptr - threshold;
+
+                getOffsets_8( pixel_5_8_, ( short )img.step, x, y );
+
+                offset0 = pixel_5_8_[0];
+                offset1 = pixel_5_8_[1];
+                offset2 = pixel_5_8_[2];
+                offset3 = pixel_5_8_[3];
+                offset4 = pixel_5_8_[4];
+                offset5 = pixel_5_8_[5];
+                offset6 = pixel_5_8_[6];
+                offset7 = pixel_5_8_[7];
+
                 if ( ptr[offset0] > cb )
                     if ( ptr[offset2] > cb )
                         if ( ptr[offset3] > cb )

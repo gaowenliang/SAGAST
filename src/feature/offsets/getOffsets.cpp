@@ -122,6 +122,11 @@ AgastDetector::buildOffsetsTable( )
 {
     switch ( getType( ) )
     {
+        case AgastDetector::SAGAST_8:
+        {
+            buildOffsetsTable_8( );
+            break;
+        }
         case AgastDetector::SAGAST_12d:
         {
             buildOffsetsTable_12d( );
@@ -135,6 +140,11 @@ AgastDetector::getOffsets( short pixel[16], short rowStride, int type, int xx, i
 {
     switch ( type )
     {
+        case AgastDetector::SAGAST_8:
+        {
+            getOffsets_8( pixel, rowStride, xx, yy );
+            break;
+        }
         case AgastDetector::SAGAST_12d:
         {
             getOffsets_12d( pixel, rowStride, xx, yy );
@@ -149,6 +159,11 @@ AgastDetector::saveOffsetsTable( std::string path )
     bool done;
     switch ( getType( ) )
     {
+        case AgastDetector::SAGAST_8:
+        {
+            done = saveOffsetsTable_8( path );
+            break;
+        }
         case AgastDetector::SAGAST_12d:
         {
             done = saveOffsetsTable_12d( path );
@@ -165,6 +180,11 @@ AgastDetector::loadOffsetsTable( std::string path )
     bool done;
     switch ( getType( ) )
     {
+        case AgastDetector::SAGAST_8:
+        {
+            done = loadOffsetsTable_8( path );
+            break;
+        }
         case AgastDetector::SAGAST_12d:
         {
             done = loadOffsetsTable_12d( path );
