@@ -42,8 +42,8 @@ The references are:
    URL: http://www6.in.tum.de/Main/ResearchAgast
 */
 
-#include "agast.h"
-#include "score/agast_score.hpp"
+#include "sagast/agast.h"
+#include "sagast/score/agast_score.hpp"
 #include <iostream>
 #include <opencv2/core/core.hpp>
 

@@ -1,7 +1,7 @@
 
-#include "../../agast.h"
-#include "../../score/agast_score.hpp"
-#include "../AGAST_ALL.h"
+#include "sagast/agast.h"
+#include "sagast/agast_core/AGAST_ALL.h"
+#include "sagast/score/agast_score.hpp"
 #include <iostream>
 
 using namespace cv;

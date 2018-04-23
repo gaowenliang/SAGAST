@@ -42,8 +42,8 @@ The references are:
    URL: http://www6.in.tum.de/Main/ResearchAgast
 */
 
-#include "agast_score.hpp"
-#include "../agast.h"
+#include "sagast/score/agast_score.hpp"
+#include "sagast/agast.h"
 
 #ifdef _MSC_VER
 #pragma warning( disable : 4127 )

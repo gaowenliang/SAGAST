@@ -22,12 +22,15 @@ find_package(Eigen3  REQUIRED)
 
 catkin_package(
     INCLUDE_DIRS include
+    LIBRARIES sagast
+#    CATKIN_DEPENDS roscpp
     )
 
 include_directories("include")
 
 include_directories(
     ${catkin_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
     )
 
@@ -47,9 +50,13 @@ set(FRONTEND_LIB_SOURCE_FILES
     ${PROJECT_SOURCE_DIR}/src/feature/offsets/getOffsets.cpp
 )
 
+add_library(sagast     ${FRONTEND_LIB_SOURCE_FILES})
+target_link_libraries(sagast     ${Boost_LIBRARIES}  ${catkin_LIBRARIES}  ${OpenCV_LIBS} )
+
+
 add_executable(run_sagast
     src/sagast.cpp
     ${FRONTEND_LIB_SOURCE_FILES}
     )
-target_link_libraries(run_sagast dw ${catkin_LIBRARIES} ${OpenCV_LIBS})
+target_link_libraries(run_sagast dw ${catkin_LIBRARIES}  ${catkin_LIBRARIES}  ${OpenCV_LIBS})
 

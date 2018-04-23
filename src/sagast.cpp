@@ -1,4 +1,4 @@
-#include "feature/agast.h"
+#include "../include/sagast/agast.h"
 #include <cv.h>
 #include <iostream>
 #include <opencv2/features2d/features2d.hpp>

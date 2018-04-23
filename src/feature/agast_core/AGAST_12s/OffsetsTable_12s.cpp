@@ -1,5 +1,5 @@
-#include "../../agast.h"
-#include "../../score/agast_score.hpp"
+#include "sagast/agast.h"
+#include "sagast/score/agast_score.hpp"
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
