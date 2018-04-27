@@ -134,6 +134,12 @@ AgastDetector::loadMask( std::string file )
     m_mask = cv::imread( file, cv::IMREAD_GRAYSCALE );
 }
 
+bool
+AgastDetector::loadMask( )
+{
+    m_mask = cv::Mat( cam->imageHeight( ), cam->imageWidth( ), CV_8UC1, cv::Scalar( 255 ) );
+}
+
 void
 AgastDetector::SAGAST2( InputArray _img, std::vector< KeyPoint >& keypoints, int threshold, bool nonmax_suppression, int type )
 {

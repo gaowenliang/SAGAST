@@ -86,6 +86,7 @@ class AgastDetector : public Feature2D
 
     bool loadCamera( std::string cam_file );
     bool loadMask( std::string file );
+    bool loadMask( );
 
     void buildOffsetsTable( );
     bool saveOffsetsTable( std::string path );
